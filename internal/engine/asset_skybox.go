@@ -35,11 +35,9 @@ import (
 	"github.com/go-gl/mathgl/mgl32"
 	"github.com/sirupsen/logrus"
 
+	"github.com/haakenlabs/forge/internal/image/hdr"
 	"github.com/haakenlabs/forge/internal/math"
 
-	forgeimage "github.com/haakenlabs/forge/internal/image"
-
-	_ "github.com/haakenlabs/forge/internal/image/hdr"
 	_ "image/jpeg"
 	_ "image/png"
 )
@@ -261,8 +259,8 @@ func loadTexture(img image.Image) (tex *Texture2D, err error) {
 		draw.Draw(rgba, rgba.Bounds(), img, image.Point{}, draw.Src)
 		tex.SetTexFormat(TextureFormatRGBA8)
 		tex.SetData(rgba.Pix)
-	case forgeimage.RGB96Model:
-		rgba := forgeimage.NewRGB96(img.Bounds())
+	case hdr.RGB96Model:
+		rgba := hdr.NewRGB96(img.Bounds())
 		draw.Draw(rgba, rgba.Bounds(), img, image.Point{}, draw.Src)
 		tex.SetTexFormat(TextureFormatRGB32)
 

@@ -20,6 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+// Package hdr implements an image.Image-compliant reader for the Radiance HDR
+// image format.
 package hdr
 
 import (
@@ -28,27 +30,10 @@ import (
 	"image"
 	"io"
 	"math"
-
-	apeximage "github.com/haakenlabs/forge/internal/image"
 )
 
 const (
-	radianceFormat = "32-bit_rle_rgbe"
 	radianceHeader = "#?RADIANCE\n"
-
-	headerFieldFormat = "FORMAT="
-
-	minEncodingLen = 8
-	maxEncodingLen = 0x7fff
-)
-
-const (
-	dsStart = iota
-	dsSeenMagic
-	dsSeenFormat
-	dsSeenEndHeader
-	dsSeenResolution
-	dsEnd
 )
 
 type decoder struct {
@@ -56,7 +41,6 @@ type decoder struct {
 	img           image.Image
 	width, height int
 	depth         int
-	stage         int
 	headerSize    int
 	tmp           [3 * 256]byte
 }
@@ -124,7 +108,7 @@ func (d *decoder) parseData(b *bufio.Reader) error {
 			g := ldexp(line[i+3], line[i+1])
 			b := ldexp(line[i+3], line[i+2])
 
-			d.img.(*apeximage.RGB96).Set(x, y, apeximage.RGB96Color{
+			d.img.(*RGB96).Set(x, y, RGB96Color{
 				R: r,
 				G: g,
 				B: b,
@@ -262,7 +246,6 @@ func Decode(r io.Reader) (image.Image, error) {
 		return nil, err
 	}
 
-	d.stage = dsSeenMagic
 	b := bufio.NewReader(d.r)
 
 	if err := d.parseHeader(b); err != nil {
@@ -272,7 +255,7 @@ func Decode(r io.Reader) (image.Image, error) {
 		return nil, err
 	}
 
-	d.img = apeximage.NewRGB96(
+	d.img = NewRGB96(
 		image.Rectangle{
 			Min: image.Point{},
 			Max: image.Point{X: d.width, Y: d.height},
@@ -309,7 +292,7 @@ func DecodeConfig(r io.Reader) (image.Config, error) {
 	}
 
 	return image.Config{
-		ColorModel: apeximage.RGB96Model,
+		ColorModel: RGB96Model,
 		Width:      d.width,
 		Height:     d.height,
 	}, nil
