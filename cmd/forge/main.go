@@ -31,9 +31,9 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/x-cray/logrus-prefixed-formatter"
 
-	"git.dbnservers.net/haakenlabs/forge/internal/engine"
+	"github.com/haakenlabs/forge/internal/engine"
 
-	"git.dbnservers.net/haakenlabs/forge/cmd/forge/scene"
+	"github.com/haakenlabs/forge/cmd/forge/scene"
 )
 
 var (

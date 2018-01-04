@@ -22,7 +22,7 @@ SOFTWARE.
 
 package instance
 
-import "git.dbnservers.net/haakenlabs/forge/internal/engine"
+import "github.com/haakenlabs/forge/internal/engine"
 
 // Assign registers an object that conforms to Object with the instance database.
 func Assign(o engine.Object) error {

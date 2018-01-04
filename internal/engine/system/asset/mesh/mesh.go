@@ -22,7 +22,7 @@ SOFTWARE.
 
 package mesh
 
-import "git.dbnservers.net/haakenlabs/forge/internal/engine"
+import "github.com/haakenlabs/forge/internal/engine"
 
 func Get(name string) (*engine.Mesh, error) {
 	return mustHandler().Get(name)

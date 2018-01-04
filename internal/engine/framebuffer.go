@@ -28,7 +28,7 @@ import (
 	"github.com/go-gl/gl/v4.3-core/gl"
 	"github.com/sirupsen/logrus"
 
-	"git.dbnservers.net/haakenlabs/forge/internal/math"
+	"github.com/haakenlabs/forge/internal/math"
 )
 
 var (

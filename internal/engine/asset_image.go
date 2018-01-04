@@ -29,9 +29,9 @@ import (
 	"image/draw"
 	"sync"
 
-	"git.dbnservers.net/haakenlabs/forge/internal/math"
+	"github.com/haakenlabs/forge/internal/math"
 
-	_ "git.dbnservers.net/haakenlabs/forge/internal/image/hdr"
+	_ "github.com/haakenlabs/forge/internal/image/hdr"
 	_ "image/jpeg"
 	_ "image/png"
 )

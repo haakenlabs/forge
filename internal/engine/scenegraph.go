@@ -25,7 +25,7 @@ package engine
 import (
 	"github.com/sirupsen/logrus"
 
-	"git.dbnservers.net/haakenlabs/forge/internal/sg"
+	"github.com/haakenlabs/forge/internal/sg"
 )
 
 type SceneGraphListener interface {

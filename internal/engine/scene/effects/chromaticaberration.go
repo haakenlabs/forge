@@ -23,7 +23,7 @@ SOFTWARE.
 package effects
 
 import (
-	"git.dbnservers.net/haakenlabs/forge/internal/engine"
+	"github.com/haakenlabs/forge/internal/engine"
 )
 
 type ChromaticAberration struct {

@@ -29,7 +29,7 @@ import (
 	"io"
 	"math"
 
-	apeximage "git.dbnservers.net/haakenlabs/forge/internal/image"
+	apeximage "github.com/haakenlabs/forge/internal/image"
 )
 
 const (

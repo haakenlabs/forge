@@ -23,9 +23,9 @@ SOFTWARE.
 package scene
 
 import (
-	"git.dbnservers.net/haakenlabs/forge/internal/engine"
-	"git.dbnservers.net/haakenlabs/forge/internal/engine/scene"
-	"git.dbnservers.net/haakenlabs/forge/internal/engine/scene/effects"
+	"github.com/haakenlabs/forge/internal/engine"
+	"github.com/haakenlabs/forge/internal/engine/scene"
+	"github.com/haakenlabs/forge/internal/engine/scene/effects"
 )
 
 const NameEditor = "editor"

@@ -23,8 +23,8 @@ SOFTWARE.
 package particle
 
 import (
-	"git.dbnservers.net/haakenlabs/forge/internal/engine"
-	"git.dbnservers.net/haakenlabs/forge/internal/engine/system/instance"
+	"github.com/haakenlabs/forge/internal/engine"
+	"github.com/haakenlabs/forge/internal/engine/system/instance"
 )
 
 var _ engine.Renderer = &System{}

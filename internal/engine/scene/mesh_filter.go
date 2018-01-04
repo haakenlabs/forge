@@ -23,8 +23,8 @@ SOFTWARE.
 package scene
 
 import (
-	"git.dbnservers.net/haakenlabs/forge/internal/engine"
-	"git.dbnservers.net/haakenlabs/forge/internal/engine/system/instance"
+	"github.com/haakenlabs/forge/internal/engine"
+	"github.com/haakenlabs/forge/internal/engine/system/instance"
 )
 
 // MeshFilter is a component that allows a Mesh to be associated with an entity.

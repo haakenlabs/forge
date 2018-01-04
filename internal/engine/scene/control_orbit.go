@@ -28,12 +28,12 @@ import (
 	"github.com/go-gl/glfw/v3.2/glfw"
 	"github.com/go-gl/mathgl/mgl32"
 
-	"git.dbnservers.net/haakenlabs/forge/internal/engine"
-	"git.dbnservers.net/haakenlabs/forge/internal/engine/system/instance"
-	"git.dbnservers.net/haakenlabs/forge/internal/engine/system/input"
-	"git.dbnservers.net/haakenlabs/forge/internal/engine/system/time"
+	"github.com/haakenlabs/forge/internal/engine"
+	"github.com/haakenlabs/forge/internal/engine/system/instance"
+	"github.com/haakenlabs/forge/internal/engine/system/input"
+	"github.com/haakenlabs/forge/internal/engine/system/time"
 
-	forgemath "git.dbnservers.net/haakenlabs/forge/internal/math"
+	forgemath "github.com/haakenlabs/forge/internal/math"
 )
 
 type ControlOrbit struct {

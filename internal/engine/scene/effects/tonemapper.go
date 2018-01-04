@@ -27,9 +27,9 @@ import (
 
 	"github.com/go-gl/mathgl/mgl32"
 
-	"git.dbnservers.net/haakenlabs/forge/internal/engine"
-	"git.dbnservers.net/haakenlabs/forge/internal/engine/system/asset/shader"
-	forgemath "git.dbnservers.net/haakenlabs/forge/internal/math"
+	"github.com/haakenlabs/forge/internal/engine"
+	"github.com/haakenlabs/forge/internal/engine/system/asset/shader"
+	forgemath "github.com/haakenlabs/forge/internal/math"
 )
 
 type Tonemapper struct {

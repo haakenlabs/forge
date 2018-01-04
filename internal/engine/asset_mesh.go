@@ -28,7 +28,7 @@ import (
 
 	"github.com/go-gl/mathgl/mgl32"
 
-	"git.dbnservers.net/haakenlabs/forge/internal/math"
+	"github.com/haakenlabs/forge/internal/math"
 )
 
 const (

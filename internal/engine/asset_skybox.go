@@ -35,11 +35,11 @@ import (
 	"github.com/go-gl/mathgl/mgl32"
 	"github.com/sirupsen/logrus"
 
-	"git.dbnservers.net/haakenlabs/forge/internal/math"
+	"github.com/haakenlabs/forge/internal/math"
 
-	forgeimage "git.dbnservers.net/haakenlabs/forge/internal/image"
+	forgeimage "github.com/haakenlabs/forge/internal/image"
 
-	_ "git.dbnservers.net/haakenlabs/forge/internal/image/hdr"
+	_ "github.com/haakenlabs/forge/internal/image/hdr"
 	_ "image/jpeg"
 	_ "image/png"
 )

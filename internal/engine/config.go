@@ -25,7 +25,7 @@ package engine
 import (
 	"github.com/spf13/viper"
 
-	"git.dbnservers.net/haakenlabs/forge/internal/math"
+	"github.com/haakenlabs/forge/internal/math"
 )
 
 const (

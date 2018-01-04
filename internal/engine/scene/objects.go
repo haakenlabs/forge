@@ -23,9 +23,9 @@ SOFTWARE.
 package scene
 
 import (
-	"git.dbnservers.net/haakenlabs/forge/internal/engine"
-	"git.dbnservers.net/haakenlabs/forge/internal/engine/system/asset/mesh"
-	"git.dbnservers.net/haakenlabs/forge/internal/engine/system/asset/shader"
+	"github.com/haakenlabs/forge/internal/engine"
+	"github.com/haakenlabs/forge/internal/engine/system/asset/mesh"
+	"github.com/haakenlabs/forge/internal/engine/system/asset/shader"
 )
 
 func CreateCube(name string) *engine.GameObject {

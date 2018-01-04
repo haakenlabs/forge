@@ -22,7 +22,7 @@ SOFTWARE.
 
 package time
 
-import "git.dbnservers.net/haakenlabs/forge/internal/engine"
+import "github.com/haakenlabs/forge/internal/engine"
 
 func FrameTime() float64 {
 	return engine.GetTime().FixedTime()

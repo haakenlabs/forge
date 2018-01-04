@@ -32,7 +32,7 @@ import (
 
 	"github.com/sirupsen/logrus"
 
-	"git.dbnservers.net/haakenlabs/forge/internal/builtin"
+	"github.com/haakenlabs/forge/internal/builtin"
 )
 
 var _ System = &Asset{}

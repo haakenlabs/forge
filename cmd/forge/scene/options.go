@@ -22,7 +22,7 @@ SOFTWARE.
 
 package scene
 
-import "git.dbnservers.net/haakenlabs/forge/internal/engine"
+import "github.com/haakenlabs/forge/internal/engine"
 
 const NameOptions = "options"
 

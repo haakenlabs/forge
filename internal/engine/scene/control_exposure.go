@@ -25,10 +25,10 @@ package scene
 import (
 	"github.com/go-gl/glfw/v3.2/glfw"
 
-	"git.dbnservers.net/haakenlabs/forge/internal/engine"
-	"git.dbnservers.net/haakenlabs/forge/internal/engine/scene/effects"
-	"git.dbnservers.net/haakenlabs/forge/internal/engine/system/input"
-	"git.dbnservers.net/haakenlabs/forge/internal/engine/system/instance"
+	"github.com/haakenlabs/forge/internal/engine"
+	"github.com/haakenlabs/forge/internal/engine/scene/effects"
+	"github.com/haakenlabs/forge/internal/engine/system/input"
+	"github.com/haakenlabs/forge/internal/engine/system/instance"
 )
 
 type ControlExposure struct {

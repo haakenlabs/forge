@@ -1,6 +1,6 @@
 package particle
 
-import "git.dbnservers.net/haakenlabs/forge/internal/engine"
+import "github.com/haakenlabs/forge/internal/engine"
 
 type ModuleCore struct {
 	StartColor    engine.Color

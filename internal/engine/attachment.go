@@ -25,7 +25,7 @@ package engine
 import (
 	"github.com/go-gl/gl/v4.3-core/gl"
 
-	"git.dbnservers.net/haakenlabs/forge/internal/math"
+	"github.com/haakenlabs/forge/internal/math"
 )
 
 type Attachment interface {

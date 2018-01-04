@@ -22,7 +22,7 @@ SOFTWARE.
 
 package shader
 
-import "git.dbnservers.net/haakenlabs/forge/internal/engine"
+import "github.com/haakenlabs/forge/internal/engine"
 
 func Get(name string) (*engine.Shader, error) {
 	return mustHandler().Get(name)
