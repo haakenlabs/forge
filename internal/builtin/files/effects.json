@@ -1,0 +1,10 @@
+{
+    "name": "builtin",
+    "description": "Built-in assets for Forge",
+    "assets": {
+        "shader": [
+            "shaders/effects/chromatic_aberration.shader",
+            "shaders/effects/tonemapper.shader"
+        ]
+    }
+}
