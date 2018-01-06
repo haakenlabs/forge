@@ -22,7 +22,9 @@ SOFTWARE.
 
 package engine
 
-import "github.com/go-gl/glfw/v3.2/glfw"
+import (
+	"github.com/go-gl/glfw/v3.2/glfw"
+)
 
 var _ System = &Time{}
 
@@ -32,8 +34,8 @@ const SysNameTime = "time"
 type Time struct {
 	frameTime     float64
 	deltaTime     float64
-	interpolation float64
 	nextLogicTick float64
+	frame         uint64
 }
 
 // Setup sets up the System.
@@ -63,10 +65,6 @@ func (t *Time) FixedTime() float64 {
 	return fixedTime
 }
 
-func (t *Time) InterpTime() float64 {
-	return t.interpolation
-}
-
 func (t *Time) Delta() float64 {
 	return t.deltaTime
 }
@@ -81,6 +79,11 @@ func (t *Time) FrameStart() {
 
 func (t *Time) FrameEnd() {
 	t.deltaTime = t.Now() - t.frameTime
+	t.frame++
+}
+
+func (t *Time) Frame() uint64 {
+	return t.frame
 }
 
 func (t *Time) LogicTick() {

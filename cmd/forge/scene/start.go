@@ -24,11 +24,9 @@ package scene
 
 import (
 	"github.com/haakenlabs/forge/internal/engine"
+	"github.com/haakenlabs/forge/internal/engine/particle"
 	"github.com/haakenlabs/forge/internal/engine/scene"
 	"github.com/haakenlabs/forge/internal/engine/scene/effects"
-	"github.com/haakenlabs/forge/internal/engine/system/asset/image"
-	"github.com/haakenlabs/forge/internal/engine/system/asset/shader"
-	"github.com/haakenlabs/forge/internal/engine/particle"
 )
 
 const NameStart = "start"
@@ -50,21 +48,27 @@ func NewStartScene() *engine.Scene {
 
 		target := engine.NewGameObject("target")
 
-		particleSys := engine.NewParticleSystem()
-
-		particleRen := engine.NewParticleRenderer()
-
-		particleRen.SetParticleSystem(particleSys)
-		particleRen.SetSprite(image.MustGet("particle.png"))
-		particleRen.SetRenderShader(shader.MustGet("particles/render-particle"))
-		particleRen.SetParticleShader(shader.MustGet("particles/compute-particle"))
-
-		particleSys.CreateParticles()
-
+		//particleSys := engine.NewParticleSystem()
+		//
+		//particleRen := engine.NewParticleRenderer()
+		//
+		//particleRen.SetParticleSystem(particleSys)
+		//particleRen.SetSprite(image.MustGet("particle.png"))
+		//particleRen.SetRenderShader(shader.MustGet("particles/render-particle"))
+		//particleRen.SetParticleShader(shader.MustGet("particles/compute-particle"))
+		//
+		//particleSys.SetStartColor(engine.ColorOrange())
+		//particleSys.SetStartLifetime(30.0)
+		//
+		//particleSys.CreateParticles()
+		//
 		//target.AddComponent(particleSys)
 		//target.AddComponent(particleRen)
 
-		psys := particle.NewParticleSystem()
+		psys := particle.NewParticleSystem(1000000)
+		psys.Emission.Rate = 1000
+		psys.Core.StartLifetime = 5
+		psys.Core.PlaybackSpeed = 1.0
 
 		target.AddComponent(psys)
 

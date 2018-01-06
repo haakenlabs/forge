@@ -1,19 +1,35 @@
 #ifdef _VERTEX_
-layout(location = 0) in vec4 color;
-layout(location = 1) in vec4 angular_vel;
-layout(location = 2) in vec4 rotation;
-layout(location = 3) in vec4 position;
-layout(location = 4) in vec4 lifecycle;
-
 uniform mat4 v_view_matrix;
 uniform mat4 v_model_matrix;
+uniform uint v_offset;
 
-out flat uint go_vertex_id;
+struct Particle
+{
+    vec4 start_color;
+    vec4 angular_velocity;
+    vec4 direction;
+    vec4 position;
+    vec4 lifecycle;
+};
+
+layout(std430, binding = 0) buffer particle_buffer {
+    Particle particles[];
+};
+
+layout(std430, binding = 1) buffer alive_buffer {
+    uint alive[];
+};
+
+out flat uint vo_index;
 
 void main()
 {
-    go_vertex_id = gl_VertexID;
-    gl_Position = v_view_matrix * v_model_matrix * vec4(position.xyz, 1.0);
+    vo_index = alive[v_offset+gl_VertexID];
+    Particle p = particles[vo_index];
+
+//    vo_color = vec4(p.position.xyz, 1.0) * 0.5 + 0.5;
+
+    gl_Position = v_view_matrix * v_model_matrix * vec4(p.position.xyz, 1.0);
 }
 
 #endif
@@ -24,15 +40,16 @@ layout(triangle_strip, max_vertices = 4) out;
 
 out vec2 go_texture;
 
-in flat uint go_vertex_id[];
-out flat uint vo_vertex_id;
-
+in flat uint vo_index[];
+out flat uint go_index;
 
 uniform mat4 v_projection_matrix;
 uniform float g_quad_length = 0.02f;
 
 void main()
 {
+    go_index = vo_index[0];
+
     mat4 m = v_projection_matrix;
 
     gl_Position = m * (vec4(-g_quad_length, -g_quad_length, 0.0, 0.0) + gl_in[0].gl_Position);
@@ -54,7 +71,6 @@ void main()
 
 #endif
 
-
 #ifdef _FRAGMENT_
 in vec2 go_texture;
 
@@ -65,7 +81,7 @@ layout(binding = 0) uniform sampler2D f_source_a;
 uniform vec4 f_color;
 uniform float f_time;
 
-in flat uint vo_vertex_id;
+in flat uint go_index;
 
 struct Particle
 {
@@ -80,23 +96,14 @@ layout(std430, binding = 0) buffer particle_buffer {
     Particle particles[];
 };
 
+void main() {
+//    vec3 color = vec3(1.0, 0.5, 0.1);
 
-void main()
-{
-    Particle p = particles[vo_vertex_id];
+    Particle p = particles[go_index];
 
-    if (p.lifecycle.y > 0.0)
-        if (p.lifecycle.z <= 0.0)
-            discard;
+    vec3 color = mix(vec3(0.0, 0.0, 1.0), vec3(1.0, 0.0, 0.0), p.lifecycle.z);
 
-    vec4 color = vec4(vec3(0.0,0.5,1.0), texture(f_source_a, go_texture).a);
-//
-//    color.r = color.r + -0.5 + cos(f_time * 0.4 + 1.5) * 0.5;
-//    color.g = color.g + -0.5 + cos(f_time * 0.6) * sin(f_time * 0.3) * 0.35;
-//    color.b = color.b + -0.5 + sin(f_time * 0.2) * 0.5;
-//    color.a *= 0.4;
-
-    fo_attachment0 = color;
+    fo_attachment0 = vec4(color, texture(f_source_a, go_texture).a);
 }
 
 #endif
