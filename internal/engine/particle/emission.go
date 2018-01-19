@@ -1,6 +1,8 @@
 package particle
 
-type ModuleEmission struct{}
+type ModuleEmission struct {
+	Rate float32
+}
 
 func NewModuleEmission() *ModuleEmission {
 	m := &ModuleEmission{}

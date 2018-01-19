@@ -23,10 +23,12 @@ SOFTWARE.
 package engine
 
 import (
+	"fmt"
+	"math"
+
 	"github.com/go-gl/gl/v4.3-core/gl"
 	"github.com/go-gl/mathgl/mgl32"
 	"github.com/sirupsen/logrus"
-	"math"
 )
 
 type ParticleSystem struct {
@@ -61,6 +63,7 @@ type ParticleRenderer struct {
 	renderShader   *Shader
 	system         *ParticleSystem
 	sprite         *Texture2D
+	clock          float64
 }
 
 type Particle struct {
@@ -288,7 +291,9 @@ func (p *ParticleRenderer) Render(camera *Camera) {
 
 	p.particleShader.Bind()
 	p.system.buffer.Bind()
-	p.particleShader.SetUniform("c_delta_time", GetTime().DeltaTime())
+	p.clock += GetTime().DeltaTime()
+	fmt.Println(p.clock)
+	p.particleShader.SetUniform("c_delta_time", float32(GetTime().DeltaTime()))
 	p.particleShader.SetUniform("c_max_particles", p.system.MaxParticles())
 
 	dispatchCount := uint32(100)

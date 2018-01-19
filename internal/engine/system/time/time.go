@@ -36,10 +36,6 @@ func FixedTime() float64 {
 	return engine.GetTime().FixedTime()
 }
 
-func InterpTime() float64 {
-	return engine.GetTime().InterpTime()
-}
-
 func Delta() float64 {
 	return engine.GetTime().Delta()
 }
