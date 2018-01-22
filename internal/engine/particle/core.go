@@ -61,9 +61,17 @@ func (m *ModuleCore) syncCounts() {
 	m.particleBuffer.Unbind()
 }
 
+func (m *ModuleCore) MaxParticles() uint32 {
+	return m.maxParticles
+}
+
+func (m *ModuleCore) ParticleCount() uint32 {
+	return m.alive
+}
+
 func NewModuleCore(maxParticles uint32) *ModuleCore {
 	m := &ModuleCore{
-		StartColor:    engine.ColorWhite(),
+		StartColor:    engine.ColorWhite,
 		StartSpeed:    10.0,
 		StartSize:     1.0,
 		PlaybackSpeed: 1.0,

@@ -106,6 +106,7 @@ func (a *App) Setup() error {
 	asset.RegisterHandler(NewMeshHandler())
 	asset.RegisterHandler(NewShaderHandler())
 	asset.RegisterHandler(NewSkyboxHandler())
+	asset.RegisterHandler(NewFontHandler())
 
 	if a.preStartFunc != nil {
 		if err := a.preStartFunc(); err != nil {
@@ -417,7 +418,7 @@ func (a *App) onDisplay() {
 			cameras[i].Render()
 		}
 
-		sg.SendMessage(MessageGUIDisplay)
+		sg.SendMessage(MessageGUIRender)
 	}
 }
 
@@ -426,6 +427,11 @@ func (a *App) onUpdate() {
 		sg := s.Graph()
 		if sg.Dirty() {
 			sg.Update()
+		}
+
+		if !s.started {
+			s.started = true
+			sg.SendMessage(MessageStart)
 		}
 
 		sg.SendMessage(MessageUpdate)

@@ -22,8 +22,6 @@ SOFTWARE.
 
 package engine
 
-
-
 type Component interface {
 	Object
 
@@ -55,7 +53,6 @@ type ScriptComponent interface {
 	// OnDeactivate is called when the component transitions to the inactive state.
 	OnDeactivate()
 
-
 	// Awake is called when the Entity is loaded by the scene graph. Note: it is
 	// not guaranteed that all parent and child associations are made. If such conditions
 	// are required, use Start() instead.
@@ -74,6 +71,9 @@ type ScriptComponent interface {
 	// Entity is added to the scene graph and after associations are made between the
 	// component and Entity.
 	Start()
+
+	// GUIRender is called during the GUI drawing phase of the rendering.
+	GUIRender()
 }
 
 var _ Component = &BaseComponent{}
@@ -157,3 +157,6 @@ func (c *BaseScriptComponent) Update() {}
 // Entity is added to the scene graph and after associations are made between the
 // component and Entity.
 func (c *BaseScriptComponent) Start() {}
+
+// GUIRender is called during the GUI drawing phase of the rendering.
+func (c *BaseScriptComponent) GUIRender() {}

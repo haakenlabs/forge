@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2017 HaakenLabs
+Copyright (c) 2018 HaakenLabs
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -20,43 +20,59 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-package engine
+package ui
 
-import (
-	"github.com/spf13/viper"
+import "github.com/haakenlabs/forge/internal/engine"
 
-	"github.com/haakenlabs/forge/internal/math"
-)
+type Slider struct {
+	BaseComponent
 
-const (
-	cfgFilename = "apex.cfg"
-	cfgPrefix   = "apex"
-)
+	value float64
+	min   float64
+	max   float64
 
-// LoadGlobalConfig sets up viper and reads in the main configuration.
-func LoadGlobalConfig() error {
-	viper.AutomaticEnv()
-	viper.SetEnvPrefix(cfgPrefix)
-	viper.SetConfigFile(cfgFilename)
-	//viper.AddConfigPath(AppDir)
-	viper.SetConfigType("json")
+	backgroundColor engine.Color
+	tint            engine.Color
 
-	err := viper.ReadInConfig()
-	if err != nil {
-		if _, ok := err.(viper.ConfigParseError); ok {
-			return err
-		}
-	}
+	onChangeFunc func(float64)
 
-	loadDefaultSettings()
-
-	return nil
+	background  *Graphic
+	activeTrack *Graphic
+	thumb       *Graphic
 }
 
-// loadDefaultSettings sets default settings.
-func loadDefaultSettings() {
-	// Graphics Options
-	viper.SetDefault("graphics.resolution", math.IVec2{1280, 720})
-	viper.SetDefault("graphics.mode", 0)
-	viper.SetDefault("graphics.vsync", true)
+func (w *Slider) UIDraw() {
+	w.background.Draw()
+	w.activeTrack.Draw()
+	w.thumb.Draw()
+}
+
+func NewSlider() *Slider {
+	w := &Slider{
+		value: 0.5,
+		min:   0.0,
+		max:   1.0,
+	}
+
+	w.SetName("UISlider")
+	engine.GetInstance().MustAssign(w)
+
+	return w
+}
+
+func CreateSlider(name string) *engine.GameObject {
+	object := CreateGenericObject(name)
+
+	slider := NewSlider()
+
+	slider.background = NewGraphic()
+	slider.activeTrack = NewGraphic()
+	slider.thumb = NewGraphic()
+
+	object.AddComponent(slider)
+	object.AddComponent(slider.background)
+	object.AddComponent(slider.activeTrack)
+	object.AddComponent(slider.thumb)
+
+	return object
 }

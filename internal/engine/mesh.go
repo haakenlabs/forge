@@ -43,7 +43,7 @@ type Mesh struct {
 	reverseWinding bool
 }
 
-type MeshPoint struct {
+type Vertex struct {
 	V mgl32.Vec3
 	N mgl32.Vec3
 	U mgl32.Vec2
@@ -118,14 +118,15 @@ func (m *Mesh) Upload() error {
 		return fmt.Errorf("mesh upload failed: vao %d has invalid geometry definition: asymmetric data", m.vao)
 	}
 
-	data := make([]MeshPoint, len(m.vertices))
+	data := make([]Vertex, len(m.vertices))
 	for idx := range m.vertices {
-		data[idx] = MeshPoint{m.vertices[idx], m.normals[idx], m.uvs[idx]}
+		data[idx] = Vertex{m.vertices[idx], m.normals[idx], m.uvs[idx]}
 	}
 
 	m.Bind()
-
+	gl.BindBuffer(gl.ARRAY_BUFFER, m.vbo)
 	gl.BufferData(gl.ARRAY_BUFFER, len(data)*32, gl.Ptr(data), gl.STATIC_DRAW)
+	m.Unbind()
 
 	return nil
 }
@@ -249,4 +250,3 @@ func NewMeshQuadBack() *Mesh {
 
 	return m
 }
-

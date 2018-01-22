@@ -31,6 +31,7 @@ type Scene struct {
 	onDeactivateFunc func()
 	name             string
 	loaded           bool
+	started          bool
 }
 
 func (s *Scene) Setup() {

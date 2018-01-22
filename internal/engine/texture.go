@@ -27,8 +27,9 @@ import (
 
 	"github.com/go-gl/gl/v4.3-core/gl"
 
-	"github.com/haakenlabs/forge/internal/math"
 	"unsafe"
+
+	"github.com/haakenlabs/forge/internal/math"
 )
 
 type TextureFormat uint32
@@ -663,6 +664,45 @@ func (t *TextureColor) Color() Color {
 func (t *TextureColor) SetColor(color Color) {
 	t.color = color
 	t.uploadFunc()
+}
+
+type TextureFont struct {
+	BaseTexture
+
+	data []uint8
+}
+
+func NewTextureFont(size math.IVec2) *TextureFont {
+	t := &TextureFont{}
+
+	t.textureType = gl.TEXTURE_2D
+
+	t.SetName("TextureFont")
+	GetInstance().MustAssign(t)
+
+	t.size = size
+	t.uploadFunc = t.Upload
+
+	t.internalFormat = gl.RGBA8
+	t.glFormat = gl.RGBA
+	t.storageFormat = gl.UNSIGNED_BYTE
+
+	return t
+}
+
+func (t *TextureFont) Upload() {
+	t.Bind()
+
+	gl.PixelStorei(gl.UNPACK_ALIGNMENT, 1)
+	if t.data != nil && len(t.data) > 0 {
+		gl.TexImage2D(gl.TEXTURE_2D, 0, t.internalFormat, t.size.X(), t.size.Y(), 0, t.glFormat, t.storageFormat, gl.Ptr(t.data))
+	} else {
+		gl.TexImage2D(gl.TEXTURE_2D, 0, t.internalFormat, t.size.X(), t.size.Y(), 0, t.glFormat, t.storageFormat, nil)
+	}
+}
+
+func (t *TextureFont) SetData(data []uint8) {
+	t.data = data
 }
 
 type TextureCubemap struct {

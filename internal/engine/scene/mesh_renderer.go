@@ -88,7 +88,7 @@ func (m *MeshRenderer) RenderShader(shader *engine.Shader, camera *engine.Camera
 	}
 
 	// FIXME: Move this somewhere out of the render loop
-	meshes := []*engine.Mesh{}
+	var meshes []*engine.Mesh
 	components := m.GameObject().Components()
 	for i := range components {
 		if meshFilter, ok := components[i].(*MeshFilter); ok {

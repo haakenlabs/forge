@@ -535,7 +535,7 @@ func NewCamera(renderPath RenderPath, hdr bool) *Camera {
 		nearClip:      0.01,
 		farClip:       100000.0,
 		aspectRatio:   GetWindow().AspectRatio(),
-		clearColor:    ColorBlack(),
+		clearColor:    ColorBlack,
 	}
 
 	c.SetName("Camera")

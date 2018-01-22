@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2017 HaakenLabs
+Copyright (c) 2018 HaakenLabs
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -20,43 +20,41 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-package engine
+package ui
 
-import (
-	"github.com/spf13/viper"
+import "github.com/haakenlabs/forge/internal/engine"
 
-	"github.com/haakenlabs/forge/internal/math"
-)
+type Primitive interface {
+	engine.Component
 
-const (
-	cfgFilename = "apex.cfg"
-	cfgPrefix   = "apex"
-)
-
-// LoadGlobalConfig sets up viper and reads in the main configuration.
-func LoadGlobalConfig() error {
-	viper.AutomaticEnv()
-	viper.SetEnvPrefix(cfgPrefix)
-	viper.SetConfigFile(cfgFilename)
-	//viper.AddConfigPath(AppDir)
-	viper.SetConfigType("json")
-
-	err := viper.ReadInConfig()
-	if err != nil {
-		if _, ok := err.(viper.ConfigParseError); ok {
-			return err
-		}
-	}
-
-	loadDefaultSettings()
-
-	return nil
+	RectTransform() *RectTransform
+	Draw()
+	Refresh()
 }
 
-// loadDefaultSettings sets default settings.
-func loadDefaultSettings() {
-	// Graphics Options
-	viper.SetDefault("graphics.resolution", math.IVec2{1280, 720})
-	viper.SetDefault("graphics.mode", 0)
-	viper.SetDefault("graphics.vsync", true)
+type BasePrimitive struct {
+	engine.BaseComponent
+
+	material *engine.Material
+	mesh     *Mesh
+}
+
+func (p *BasePrimitive) RectTransform() *RectTransform {
+	return p.GameObject().Transform().(*RectTransform)
+}
+
+func (p *BasePrimitive) SetMaterial(material *engine.Material) {
+	p.material = material
+}
+
+func (p *BasePrimitive) SetMesh(mesh *Mesh) {
+	p.mesh = mesh
+}
+
+func (p *BasePrimitive) Mesh() *Mesh {
+	return p.mesh
+}
+
+func (p *BasePrimitive) Shader() *engine.Material {
+	return p.material
 }

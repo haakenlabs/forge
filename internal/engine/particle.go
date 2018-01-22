@@ -406,7 +406,7 @@ func (p *ParticleBuffer) Dealloc() {
 func NewParticleSystem() *ParticleSystem {
 	p := &ParticleSystem{
 		maxParticles:  1000000,
-		startColor:    ColorWhite(),
+		startColor:    ColorWhite,
 		playbackSpeed: 1.0,
 		startSpeed:    10.0,
 		startSize:     1.0,

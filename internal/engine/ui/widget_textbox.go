@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2017 HaakenLabs
+Copyright (c) 2018 HaakenLabs
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -20,43 +20,48 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-package engine
+package ui
 
-import (
-	"github.com/spf13/viper"
+import "github.com/haakenlabs/forge/internal/engine"
 
-	"github.com/haakenlabs/forge/internal/math"
-)
+type Textbox struct {
+	BaseComponent
 
-const (
-	cfgFilename = "apex.cfg"
-	cfgPrefix   = "apex"
-)
+	value string
 
-// LoadGlobalConfig sets up viper and reads in the main configuration.
-func LoadGlobalConfig() error {
-	viper.AutomaticEnv()
-	viper.SetEnvPrefix(cfgPrefix)
-	viper.SetConfigFile(cfgFilename)
-	//viper.AddConfigPath(AppDir)
-	viper.SetConfigType("json")
+	onChangeFunc func(string)
 
-	err := viper.ReadInConfig()
-	if err != nil {
-		if _, ok := err.(viper.ConfigParseError); ok {
-			return err
-		}
-	}
-
-	loadDefaultSettings()
-
-	return nil
+	background *Graphic
+	text       *Text
 }
 
-// loadDefaultSettings sets default settings.
-func loadDefaultSettings() {
-	// Graphics Options
-	viper.SetDefault("graphics.resolution", math.IVec2{1280, 720})
-	viper.SetDefault("graphics.mode", 0)
-	viper.SetDefault("graphics.vsync", true)
+func (w *Textbox) UIDraw() {
+	w.background.Draw()
+	w.text.Draw()
+}
+
+func NewTextbox() *Textbox {
+	w := &Textbox{
+		value: "Text",
+	}
+
+	w.SetName("UITextbox")
+	engine.GetInstance().MustAssign(w)
+
+	return w
+}
+
+func CreateTextbox(name string) *engine.GameObject {
+	object := CreateGenericObject(name)
+
+	textbox := NewTextbox()
+
+	textbox.background = NewGraphic()
+	textbox.text = NewText()
+
+	object.AddComponent(textbox)
+	object.AddComponent(textbox.background)
+	object.AddComponent(textbox.text)
+
+	return object
 }

@@ -31,7 +31,7 @@ const (
 	MessageUpdate
 	MessageLateUpdate
 	MessageFixedUpdate
-	MessageGUIDisplay
+	MessageGUIRender
 	MessageSGUpdate
 )
 
@@ -56,6 +56,9 @@ func (g *GameObject) SetActive(active bool) {
 		g.active = active
 
 		// TODO: Notify scene graph
+		if g.Scene() != nil && g.Scene().Graph() != nil {
+			g.Scene().Graph().SetDirty()
+		}
 	}
 }
 
@@ -112,6 +115,10 @@ func (g *GameObject) SendMessage(msg Message) {
 			if c, ok := g.components[i].(ScriptComponent); ok {
 				c.FixedUpdate()
 			}
+		case MessageGUIRender:
+			if c, ok := g.components[i].(ScriptComponent); ok {
+				c.GUIRender()
+			}
 		case MessageSGUpdate:
 			if c, ok := g.components[i].(SceneGraphListener); ok {
 				c.OnSceneGraphUpdate()
@@ -146,7 +153,7 @@ func (g *GameObject) Components() []Component {
 
 // ComponentsInChildren returns the components in any of the child objects.
 func (g *GameObject) ComponentsInChildren() []Component {
-	components := []Component{}
+	var components []Component
 
 	if len(g.children) == 0 {
 		return components
@@ -172,7 +179,7 @@ func (g *GameObject) ComponentsInChildren() []Component {
 // ComponentsInChildren returns the components in any of the parent objects.
 func (g *GameObject) ComponentsInParent() []Component {
 	ancestors := g.Ancestors()
-	components := []Component{}
+	var components []Component
 
 	if len(ancestors) == 0 {
 		return components
@@ -248,7 +255,7 @@ func (g *GameObject) Scene() *Scene {
 
 // Ancestors lists all ancestor objects of this game object.
 func (g *GameObject) Ancestors() []*GameObject {
-	ancestors := []*GameObject{}
+	var ancestors []*GameObject
 
 	if g.Parent() != nil {
 		ancestors = append(ancestors, g.Parent())

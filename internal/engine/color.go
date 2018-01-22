@@ -95,70 +95,22 @@ func (c Color) Elem() (float32, float32, float32, float32) {
 	return c.R, c.G, c.B, c.A
 }
 
-func ColorBlack() Color {
-	return NewColorRGB(mgl32.Vec3{0, 0, 0})
-}
-
-func ColorBlue() Color {
-	return NewColorRGB(mgl32.Vec3{0, 0, 1})
-}
-
-func ColorClear() Color {
-	return NewColorRGBA(mgl32.Vec4{0, 0, 0, 0})
-}
-
-func ColorCyan() Color {
-	return NewColorRGB(mgl32.Vec3{0, 1, 1})
-}
-
-func ColorGray() Color {
-	return NewColorRGB(mgl32.Vec3{0.5, 0.5, 0.5})
-}
-
-func ColorGreen() Color {
-	return NewColorRGB(mgl32.Vec3{0, 1, 0})
-}
-
-func ColorMagenta() Color {
-	return NewColorRGB(mgl32.Vec3{1, 0, 1})
-}
-
-func ColorRed() Color {
-	return NewColorRGB(mgl32.Vec3{1, 0, 0})
-}
-
-func ColorWhite() Color {
-	return NewColorRGB(mgl32.Vec3{1, 1, 1})
-}
-
-func ColorYellow() Color {
-	return NewColorRGB(mgl32.Vec3{1, 0.92, 0.016})
-}
-
-func ColorOrange() Color {
-	return NewColorRGB(mgl32.Vec3{1, 0.5, 0})
-}
-
-func ColorPurple() Color {
-	return NewColorRGB(mgl32.Vec3{0.5, 0, 0.5})
-}
-
-func ColorIron() Color {
-	return NewColorRGB(mgl32.Vec3{0.56, 0.57, 0.58})
-}
-
-func ColorCopper() Color {
-	return NewColorRGB(mgl32.Vec3{0.95, 0.64, 0.54})
-}
-
-func ColorGold() Color {
-	return NewColorRGB(mgl32.Vec3{1.00, 0.71, 0.29})
-}
-
-func ColorAluminium() Color {
-	return NewColorRGB(mgl32.Vec3{0.91, 0.92, 0.92})
-}
-
-func ColorSilver() Color {
-	return NewColorRGB(mgl32.Vec3{0.95, 0.93, 0.88})
-}
+var (
+	ColorBlack     = Color{0, 0, 0, 1}
+	ColorBlue      = Color{0, 0, 1, 1}
+	ColorClear     = Color{0, 0, 0, 0}
+	ColorCyan      = Color{0, 1, 1, 1}
+	ColorGray      = Color{0.5, 0.5, 0.5, 1}
+	ColorGreen     = Color{0, 1, 0, 1}
+	ColorMagenta   = Color{1, 0, 1, 1}
+	ColorRed       = Color{1, 0, 0, 1}
+	ColorWhite     = Color{1, 1, 1, 1}
+	ColorYellow    = Color{1, 0.92, 0.016, 1}
+	ColorOrange    = Color{1, 0.5, 0, 1}
+	ColorPurple    = Color{0.5, 0, 0.5, 1}
+	ColorIron      = Color{0.56, 0.57, 0.58, 1}
+	ColorCopper    = Color{0.95, 0.64, 0.54, 1}
+	ColorGold      = Color{1.00, 0.71, 0.29, 1}
+	ColorAluminium = Color{0.91, 0.92, 0.92, 1}
+	ColorSilver    = Color{0.95, 0.93, 0.88, 1}
+)

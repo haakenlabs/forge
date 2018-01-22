@@ -118,7 +118,7 @@ func NewMaterialPBR() *Material {
 
 	m.shader = DefaultShader()
 
-	m.SetProperty("f_albedo", ColorCopper().Vec3())
+	m.SetProperty("f_albedo", ColorCopper.Vec3())
 	m.SetProperty("f_metallic", 1.0)
 	m.SetProperty("f_roughness", 0.8)
 
