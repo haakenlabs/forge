@@ -62,7 +62,7 @@ void main() {
 
         vec3 force = vec3(0.0);
 
-        if (u_attractors != 0) {
+        if (u_attractor_enable != 0) {
             for (int i = 0; i < u_attractor_count; i++) {
                 Attractor a = attractors[i];
 
