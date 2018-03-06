@@ -203,6 +203,8 @@ func (a *Asset) LoadManifest(files ...string) error {
 			return err
 		}
 
+		logrus.Debug(m.Assets)
+
 		// Load assets.
 		for t := range m.Assets {
 			h, err := a.GetHandler(t)
@@ -211,7 +213,7 @@ func (a *Asset) LoadManifest(files ...string) error {
 				continue
 			}
 
-			logrus.Debug("Loading asset type: ", t)
+			logrus.Debug(">>>>>>>> Loading asset type: ", t)
 
 			// Read and load assets.
 			for n := range m.Assets[t] {

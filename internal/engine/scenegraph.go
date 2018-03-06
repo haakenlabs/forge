@@ -149,7 +149,7 @@ func (s *SceneGraph) Parent(e *GameObject) *GameObject {
 
 // Children returns the direct descendants of the requested entity.
 func (s *SceneGraph) Children(e *GameObject) []*GameObject {
-	children := []*GameObject{}
+	var children []*GameObject
 
 	objDesc, err := s.graph.GetVertexByObject(e)
 	if err != nil {
@@ -165,7 +165,7 @@ func (s *SceneGraph) Children(e *GameObject) []*GameObject {
 
 // Descendants returns the descendant entities of requested entity.
 func (s *SceneGraph) Descendants(e *GameObject) []*GameObject {
-	d := []*GameObject{}
+	var d []*GameObject
 
 	u, err := s.graph.GetVertexByObject(e)
 	if err != nil {
@@ -173,7 +173,7 @@ func (s *SceneGraph) Descendants(e *GameObject) []*GameObject {
 		return d
 	}
 
-	dfs := s.graph.DepthFirstSearch(u, true)
+	dfs := s.graph.DepthFirstSearch(u, false)
 
 	for _, v := range dfs {
 		obj := s.objectAt(v)

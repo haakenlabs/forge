@@ -30,12 +30,12 @@ out vec4 fo_color;
 
 layout(binding = 0) uniform sampler2D f_source_a;
 
-uniform vec3 f_color;
+uniform vec4 f_color;
 uniform float f_alpha;
 
 void main()
 {
-    fo_color = vec4(f_color, texture(f_source_a, vo_texture).r * f_alpha);
+    fo_color = vec4(f_color.rgb, texture(f_source_a, vo_texture).r * f_color.a * f_alpha);
 }
 
 

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2017 HaakenLabs
+Copyright (c) 2018 HaakenLabs
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -20,43 +20,47 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-package engine
+package ui
 
-import (
-	"github.com/spf13/viper"
+import "github.com/haakenlabs/forge/internal/engine"
 
-	"github.com/haakenlabs/forge/internal/math"
-)
+type Component interface {
+	engine.ScriptComponent
 
-const (
-	cfgFilename = "apex.cfg"
-	cfgPrefix   = "apex"
-)
-
-// LoadGlobalConfig sets up viper and reads in the main configuration.
-func LoadGlobalConfig() error {
-	viper.AutomaticEnv()
-	viper.SetEnvPrefix(cfgPrefix)
-	viper.SetConfigFile(cfgFilename)
-	//viper.AddConfigPath(AppDir)
-	viper.SetConfigType("json")
-
-	err := viper.ReadInConfig()
-	if err != nil {
-		if _, ok := err.(viper.ConfigParseError); ok {
-			return err
-		}
-	}
-
-	loadDefaultSettings()
-
-	return nil
+	OnCanvasChanged()
+	OnTransformChanged()
+	CanvasChanged()
+	TransformChanged()
+	ParentChanged()
+	RectTransform() *RectTransform
 }
 
-// loadDefaultSettings sets default settings.
-func loadDefaultSettings() {
-	// Graphics Options
-	viper.SetDefault("graphics.resolution", math.IVec2{1280, 720})
-	viper.SetDefault("graphics.mode", 0)
-	viper.SetDefault("graphics.vsync", true)
+type BaseComponent struct {
+	engine.BaseScriptComponent
+}
+
+func (c *BaseComponent) OnCanvasChanged() {}
+
+func (c *BaseComponent) OnTransformChanged() {}
+
+func (c *BaseComponent) CanvasChanged() {}
+
+func (c *BaseComponent) TransformChanged() {
+	c.OnTransformChanged()
+}
+
+func (c *BaseComponent) ParentChanged() {
+	c.RectTransform().Recompute(true)
+}
+
+func (c *BaseComponent) RectTransform() *RectTransform {
+	return c.GameObject().Transform().(*RectTransform)
+}
+
+func CreateGenericObject(name string) *engine.GameObject {
+	object := engine.NewGameObject(name)
+
+	object.SetTransform(NewRectTransform())
+
+	return object
 }

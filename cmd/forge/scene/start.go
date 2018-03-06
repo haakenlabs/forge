@@ -23,13 +23,121 @@ SOFTWARE.
 package scene
 
 import (
+	"fmt"
+
+	"github.com/go-gl/glfw/v3.2/glfw"
+	"github.com/go-gl/mathgl/mgl32"
 	"github.com/haakenlabs/forge/internal/engine"
 	"github.com/haakenlabs/forge/internal/engine/particle"
 	"github.com/haakenlabs/forge/internal/engine/scene"
 	"github.com/haakenlabs/forge/internal/engine/scene/effects"
+	"github.com/haakenlabs/forge/internal/engine/system/input"
+	"github.com/haakenlabs/forge/internal/engine/ui"
 )
 
 const NameStart = "start"
+
+type Inspector struct {
+	engine.BaseScriptComponent
+
+	psys *particle.System
+
+	uiObject           *engine.GameObject
+	labelStartLifetime *ui.Label
+	labelPlaybackSpeed *ui.Label
+	labelEmissionRate  *ui.Label
+	labelMaxParticles  *ui.Label
+	labelCurParticles  *ui.Label
+
+	show bool
+}
+
+func (i *Inspector) LateUpdate() {
+	if i.show {
+		i.labelStartLifetime.SetValue(fmt.Sprintf("Start Lifetime: %.0f", i.psys.Core.StartLifetime))
+		i.labelPlaybackSpeed.SetValue(fmt.Sprintf("Playback Speed: %.2f", i.psys.Core.PlaybackSpeed))
+		i.labelEmissionRate.SetValue(fmt.Sprintf("Emission Rate: %.0f", i.psys.Emission.Rate))
+		i.labelMaxParticles.SetValue(fmt.Sprintf("Max Particles: %d", i.psys.Core.MaxParticles()))
+		i.labelCurParticles.SetValue(fmt.Sprintf("Particle Count: %d", i.psys.Core.ParticleCount()))
+	}
+
+	if input.KeyDown(glfw.KeyF1) {
+		if i.show {
+			i.uiObject.SetActive(false)
+			i.show = false
+		} else {
+			i.uiObject.SetActive(true)
+			i.show = true
+		}
+	}
+}
+
+func makeUI(psys *particle.System) *engine.GameObject {
+	controller := ui.CreateController("ui_controller")
+
+	panel := ui.CreatePanel("test_panel")
+	ic := ui.ImageComponent(panel)
+	ic.SetColor(engine.ColorClear)
+	panel.SetActive(false)
+
+	inspector := &Inspector{
+		psys:     psys,
+		uiObject: panel,
+	}
+
+	labelStartLifetime := ui.CreateLabel("label_startlifetime")
+	{
+		ui.RectTransformComponent(labelStartLifetime).SetPosition2D(mgl32.Vec2{8, 8})
+		lc := ui.LabelComponent(labelStartLifetime)
+		lc.SetValue("Start Lifetime: -")
+		inspector.labelStartLifetime = lc
+	}
+
+	labelPlaybackSpeed := ui.CreateLabel("label_playbackspeed")
+	{
+		ui.RectTransformComponent(labelPlaybackSpeed).SetPosition2D(mgl32.Vec2{8, 24})
+		lc := ui.LabelComponent(labelPlaybackSpeed)
+		lc.SetValue("Playback Speed: -")
+		inspector.labelPlaybackSpeed = lc
+	}
+
+	labelEmissionRate := ui.CreateLabel("label_emissionrate")
+	{
+		ui.RectTransformComponent(labelEmissionRate).SetPosition2D(mgl32.Vec2{8, 40})
+		lc := ui.LabelComponent(labelEmissionRate)
+		lc.SetValue("Emission Rate: -")
+		inspector.labelEmissionRate = lc
+	}
+
+	labelMaxParticles := ui.CreateLabel("label_maxparticles")
+	{
+		ui.RectTransformComponent(labelMaxParticles).SetPosition2D(mgl32.Vec2{8, 56})
+		lc := ui.LabelComponent(labelMaxParticles)
+		lc.SetValue("Max Particles: -")
+		inspector.labelMaxParticles = lc
+	}
+
+	labelCurParticles := ui.CreateLabel("label_particlecount")
+	{
+		ui.RectTransformComponent(labelCurParticles).SetPosition2D(mgl32.Vec2{8, 72})
+		lc := ui.LabelComponent(labelCurParticles)
+		lc.SetValue("Particle Count: -")
+		inspector.labelCurParticles = lc
+	}
+
+	ui.RectTransformComponent(panel).SetPosition2D(mgl32.Vec2{16, 16})
+
+	panel.AddChild(labelStartLifetime)
+	panel.AddChild(labelPlaybackSpeed)
+	panel.AddChild(labelEmissionRate)
+	panel.AddChild(labelMaxParticles)
+	panel.AddChild(labelCurParticles)
+
+	controller.AddChild(panel)
+	controller.AddComponent(inspector)
+
+	return controller
+}
 
 func NewStartScene() *engine.Scene {
 	s := engine.NewScene(NameStart)
@@ -48,23 +156,6 @@ func NewStartScene() *engine.Scene {
 
 		target := engine.NewGameObject("target")
 
-		//particleSys := engine.NewParticleSystem()
-		//
-		//particleRen := engine.NewParticleRenderer()
-		//
-		//particleRen.SetParticleSystem(particleSys)
-		//particleRen.SetSprite(image.MustGet("particle.png"))
-		//particleRen.SetRenderShader(shader.MustGet("particles/render-particle"))
-		//particleRen.SetParticleShader(shader.MustGet("particles/compute-particle"))
-		//
-		//particleSys.SetStartColor(engine.ColorOrange())
-		//particleSys.SetStartLifetime(30.0)
-		//
-		//particleSys.CreateParticles()
-		//
-		//target.AddComponent(particleSys)
-		//target.AddComponent(particleRen)
-
 		psys := particle.NewParticleSystem(1000000)
 		psys.Emission.Rate = 1000
 		psys.Core.StartLifetime = 5
@@ -78,6 +169,9 @@ func NewStartScene() *engine.Scene {
 			return err
 		}
 		if err := s.Graph().AddGameObject(camera, nil); err != nil {
+			return err
+		}
+		if err := s.Graph().AddGameObject(makeUI(psys), nil); err != nil {
 			return err
 		}
 

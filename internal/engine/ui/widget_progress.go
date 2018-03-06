@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2017 HaakenLabs
+Copyright (c) 2018 HaakenLabs
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -20,43 +20,51 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-package engine
+package ui
 
-import (
-	"github.com/spf13/viper"
+import "github.com/haakenlabs/forge/internal/engine"
 
-	"github.com/haakenlabs/forge/internal/math"
-)
+type Progress struct {
+	BaseComponent
 
-const (
-	cfgFilename = "apex.cfg"
-	cfgPrefix   = "apex"
-)
+	progress float64
 
-// LoadGlobalConfig sets up viper and reads in the main configuration.
-func LoadGlobalConfig() error {
-	viper.AutomaticEnv()
-	viper.SetEnvPrefix(cfgPrefix)
-	viper.SetConfigFile(cfgFilename)
-	//viper.AddConfigPath(AppDir)
-	viper.SetConfigType("json")
+	backgroundColor engine.Color
+	tint            engine.Color
 
-	err := viper.ReadInConfig()
-	if err != nil {
-		if _, ok := err.(viper.ConfigParseError); ok {
-			return err
-		}
-	}
+	onChangeFunc func(float64)
 
-	loadDefaultSettings()
-
-	return nil
+	background  *Graphic
+	activeTrack *Graphic
 }
 
-// loadDefaultSettings sets default settings.
-func loadDefaultSettings() {
-	// Graphics Options
-	viper.SetDefault("graphics.resolution", math.IVec2{1280, 720})
-	viper.SetDefault("graphics.mode", 0)
-	viper.SetDefault("graphics.vsync", true)
+func (w *Progress) UIDraw() {
+	w.background.Draw()
+	w.activeTrack.Draw()
+}
+
+func NewProgress() *Progress {
+	w := &Progress{
+		progress: 0.0,
+	}
+
+	w.SetName("UIProgress")
+	engine.GetInstance().MustAssign(w)
+
+	return w
+}
+
+func CreateProgress(name string) *engine.GameObject {
+	object := CreateGenericObject(name)
+
+	progress := NewProgress()
+
+	progress.background = NewGraphic()
+	progress.activeTrack = NewGraphic()
+
+	object.AddComponent(progress)
+	object.AddComponent(progress.background)
+	object.AddComponent(progress.activeTrack)
+
+	return object
 }
